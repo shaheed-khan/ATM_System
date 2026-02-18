@@ -1,0 +1,80 @@
+class ATM:
+    def __init__(self, pin, balance=0):
+        self.pin = pin
+        self.balance = balance
+        self.is_authenticated = False
+
+    def authenticate(self):
+        attempts = 3
+        while attempts > 0:
+            entered_pin = input("Enter your PIN: ")
+            if entered_pin == self.pin:
+                self.is_authenticated = True
+                print("Login successful!\n")
+                return True
+            else:
+                attempts -= 1
+                print(f"Incorrect PIN. Attempts left: {attempts}")
+        
+        print("Too many incorrect attempts. Card blocked.")
+        return False
+
+    def show_menu(self):
+        while True:
+            print("\n===== ATM MENU =====")
+            print("1. Check Balance")
+            print("2. Withdraw Money")
+            print("3. Deposit Money")
+            print("4. Exit")
+
+            choice = input("Select an option (1-4): ")
+
+            if choice == "1":
+                self.check_balance()
+            elif choice == "2":
+                self.withdraw()
+            elif choice == "3":
+                self.deposit()
+            elif choice == "4":
+                print("Thank you for using the ATM.")
+                break
+            else:
+                print("Invalid option. Please try again.")
+
+    def check_balance(self):
+        print(f"Your current balance is: ${self.balance}")
+
+    def withdraw(self):
+        try:
+            amount = float(input("Enter amount to withdraw: "))
+            if amount <= 0:
+                print("Enter a valid amount.")
+            elif amount > self.balance:
+                print("Insufficient balance.")
+            else:
+                self.balance -= amount
+                print(f"Please collect your cash: ${amount}")
+                print(f"Remaining balance: ${self.balance}")
+        except ValueError:
+            print("Invalid input. Enter a numeric value.")
+
+    def deposit(self):
+        try:
+            amount = float(input("Enter amount to deposit: "))
+            if amount <= 0:
+                print("Enter a valid amount.")
+            else:
+                self.balance += amount
+                print(f"${amount} deposited successfully.")
+                print(f"Updated balance: ${self.balance}")
+        except ValueError:
+            print("Invalid input. Enter a numeric value.")
+
+
+
+if __name__ == "__main__":
+    atm = ATM(pin="1234", balance=1000)  # Default PIN and balance
+    
+    print("===== Welcome to the ATM =====")
+    if atm.authenticate():
+        atm.show_menu()
