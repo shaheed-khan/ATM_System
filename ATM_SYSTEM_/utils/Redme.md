@@ -51,5 +51,4 @@ check the balance
 
 
 
-### create the account and the push the code on the github
 
